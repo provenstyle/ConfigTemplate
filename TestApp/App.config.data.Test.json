@@ -1,0 +1,4 @@
+﻿{
+    server: 'test',
+    port: 7000
+}

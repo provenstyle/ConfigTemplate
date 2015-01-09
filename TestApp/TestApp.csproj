@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F8E654EA-43ED-4951-8FF5-6611862CDBFA}</ProjectGuid>
+    <ProjectGuid>{AEDFE51D-0A90-4791-983D-797339EE4D82}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConfigTemplate</RootNamespace>
-    <AssemblyName>ConfigTemplate</AssemblyName>
+    <RootNamespace>TestApp</RootNamespace>
+    <AssemblyName>TestApp</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,13 +36,6 @@
     <OutputPath>bin\Test\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotLiquid">
-      <HintPath>packages\DotLiquid.1.8.0\lib\NET45\DotLiquid.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,14 +49,35 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="App.config.data.Debug.json" />
+    <None Include="App.config.template">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config.data.Release.json" />
+    <None Include="App.config.data.Test.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+       Other similar extension points exist, see Microsoft.Common.targets.-->
   <Target Name="BeforeBuild">
+    <Message Text="BuildConfiguration: $(Configuration)" Importance="High" />
+    <CallTarget Targets="ApplyConfiguration" />
   </Target>
   <Target Name="AfterBuild">
   </Target>
-  -->
+  <PropertyGroup>
+    <ApplyConfigurationCommand>
+            $(ProjectDir)..\release\ConfigTemplate.exe $(ProjectDir)\App.config.template $(ProjectDir)\App.config.data.$(Configuration).json $(ProjectDir)\App.config
+        </ApplyConfigurationCommand>
+  </PropertyGroup>
+  <Target Name="ApplyConfiguration">
+    <Message Text="Applying configuration" />
+    <Message Text="$(ApplyConfigurationCommand)" />
+    <Exec Command="$(ApplyConfigurationCommand)" />
+  </Target>
 </Project>

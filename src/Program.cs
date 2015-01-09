@@ -51,8 +51,7 @@ namespace ConfigTemplate
                 template.Render(writer, renderParameters);
             }
 
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
+            Console.WriteLine("Wrote template to: {0}", outputPath);
         }
 
         static bool FileDoesNotExist(string[] filePaths)
